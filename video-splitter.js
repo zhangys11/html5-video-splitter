@@ -1,5 +1,7 @@
-var spawn = require('child_process').spawn
-spawn('open', ['http://127.0.0.1:1337/']);
+var url = 'http://127.0.0.1:1337';
+var start = (process.platform == 'darwin'? 'open': process.platform == 'win32'? 'start': 'xdg-open');
+require('child_process').exec(start + ' ' + url);
+
 
 var http = require('http');
 var path = require("path"); 
@@ -31,7 +33,7 @@ http.createServer(function (req, res) {
         var start = data.begin;
         var end = data.end;
         
-        var command = "ffmpeg -y -ss "+start+" -t "+(end-start)+" -i "+inputFilePath+" -vcodec copy -acodec copy "+outputFilePath;
+        var command = "ffmpeg -y -ss "+start+" -t "+(end-start)+" -i \""+inputFilePath+"\" -vcodec copy -acodec copy \""+outputFilePath+"\"";
         exec(command, function(error, stdout, stderr) {
           var msg = ""
           if(error) {
